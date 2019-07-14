@@ -1,5 +1,9 @@
 $Config = Import-PowerShellDataFile $PSScriptRoot\Config.psd1
 
+Start-Process $Config.RTSSLocation
+Start-Process $Config.MsiAfterburnerLocation
+Start-Process $Config.MsiAfterburnerRemoteServerLocation
+
 $InfluxUri = $Config.InfluxServer + "/write?db=" + $Config.InfluxDb
 $auth = "$($Config.MarsUser):$($Config.MarsPass)"
 $encodedAuth = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($auth))
@@ -10,7 +14,7 @@ $Headers = @{
 }
 
 while ($true) {
-    $result = Invoke-WebRequest -Uri $Config.MarsAddress -Headers $Headers -UseBasicParsing -TimeoutSec 2
+    $result = Invoke-WebRequest -Uri $Config.MarsAddress -Headers $Headers -UseBasicParsing -TimeoutSec 2 -ErrorAction Continue
     $Metrics = @{ }
     $BodyArray = @()
     if ($result.StatusCode -eq 200) {
@@ -25,11 +29,12 @@ while ($true) {
         $Metrics | % {
         }
         $Body = $BodyArray -join "`n"
-        Invoke-WebRequest -Uri $InfluxUri -Method POST -Body $Body -UseBasicParsing | out-null
+        Write-Host "Sending to InfluxDB"
+        Write-Host "$Body"
+        Invoke-WebRequest -Uri $InfluxUri -Method POST -Body $Body -UseBasicParsing -ErrorAction Continue | out-null 
     }
     else {
         Write-Host "Request Failed"
-        exit 1
     }
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds $Config.PauseBetweenRequestsInSeconds
 }

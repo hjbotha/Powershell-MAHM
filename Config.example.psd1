@@ -5,4 +5,8 @@
     MarsPass     = 'password'
     InfluxServer = 'http://192.168.1.1:8086' # Influx Server HTTP Address
     InfluxDb     = "systemdata" # Influx database in which to put the data
+    MsiAfterburnerLocation = "C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
+    MsiAfterburnerRemoteServerLocation = "C:\Program Files (x86)\MSI Afterburner Remote Server\MSIAfterburnerRemoteServer.exe"
+    RTSSLocation = "C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe"
+    PauseBetweenRequestsInSeconds = 5
 }
