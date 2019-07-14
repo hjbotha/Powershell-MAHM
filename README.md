@@ -7,4 +7,9 @@ Inspired by [GamerGraf](https://github.com/ragesaq/gamergraf). Much as I love WS
 # Usage
 - Clone this repository
 - Rename Config.example.psd1 to Config.psd1 and edit it according to your requirement
-- Run it, and/or create a Windows scheduled task to run it automatically when you log in (Remember to set MSI Afterburner and Remote Server to run at logon too)
+- Run it
+- Optionally, create a Windows scheduled task to run it automatically when you log in using the vbscript startup helper script
+- - Run only when a user is logged on
+- - Run with highest privilege
+- - Program/script: cscript.exe
+- - Arguments: //nologo C:\Location\of\script\start.vbs
